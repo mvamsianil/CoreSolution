@@ -3,13 +3,12 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace APIApplication.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
-    public class WeatherForecastController : ControllerBase
+    [Route("coreapi/[controller]")]
+    public class WeatherForecastController : Controller
     {
         private static readonly string[] Summaries = new[]
         {

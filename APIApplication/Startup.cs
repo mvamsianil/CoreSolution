@@ -1,8 +1,12 @@
+using APIApplication.Middleware;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.Extensions.FileProviders;
+using System.IO;
 
 namespace APIApplication
 {
@@ -28,14 +32,41 @@ namespace APIApplication
             {
                 app.UseDeveloperExceptionPage();
             }
+            else
+            {
+                app.UseExceptionHandler("/Error");
+            }
 
-            app.UseHttpsRedirection();
+            app.UseDirectoryBrowser(new DirectoryBrowserOptions
+            {
+                FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "logs", "")),
+                RequestPath = "/Logs"
+            });
+
+            //app.UseHsts();
+            //app.UseHttpsRedirection();
+            app.UseStaticFiles();
+            //app.UseCookiePolicy();
+
             app.UseRouting();
-            app.UseAuthorization();
+            //app.UseCors();
+            //app.UseAuthentication();
+            //app.UseAuthorization();
+            //app.UseSession();
+
+            //app.UseMvc();
+            app.UseMiddleware<JwtTokenMiddleware>();
+            app.UseLogUrl();
+            //OR 
+            //app.UseMiddleware<LogURLMiddleware>();
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapControllers();
+                endpoints.MapControllerRoute(
+                    name: "Default", 
+                    pattern: "coreapi/{controller}", 
+                    defaults: new { controller = "WeatherForecast", action = "Get" }, 
+                    constraints: null, dataTokens: null);
             });
         }
     }
