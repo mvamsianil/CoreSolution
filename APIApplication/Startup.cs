@@ -7,6 +7,8 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.FileProviders;
 using System.IO;
+using APIApplication.Services;
+using APIApplication.Helpers;
 
 namespace APIApplication
 {
@@ -22,20 +24,29 @@ namespace APIApplication
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors();
             services.AddControllers();
+            services.Configure<AppSettings>(Configuration.GetSection("AppSettings"));
+            services.AddScoped<IUserService, UserService>();
+            services.AddAuthentication(o =>
+            {
+                o.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                o.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(o =>
+            {
+                o.Audience = Configuration["Settings:Authentication:ApiName"];
+                o.Authority = Configuration["Settings:Authentication:Authority"];
+                //o.RequireHttpsMetadata = !CurrentEnvironment.IsDevelopment();
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
-            {
                 app.UseDeveloperExceptionPage();
-            }
             else
-            {
                 app.UseExceptionHandler("/Error");
-            }
 
             app.UseDirectoryBrowser(new DirectoryBrowserOptions
             {
@@ -49,25 +60,28 @@ namespace APIApplication
             //app.UseCookiePolicy();
 
             app.UseRouting();
-            //app.UseCors();
-            //app.UseAuthentication();
-            //app.UseAuthorization();
+            app.UseCors(x => x
+                .AllowAnyOrigin()
+                .AllowAnyMethod()
+                .AllowAnyHeader());
+            app.UseAuthentication();
+            app.UseAuthorization();
             //app.UseSession();
 
             //app.UseMvc();
-            app.UseMiddleware<JwtTokenMiddleware>();
+            app.UseMiddleware<JwtMiddleware>();
             app.UseLogUrl();
             //OR 
             //app.UseMiddleware<LogURLMiddleware>();
-
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllerRoute(
-                    name: "Default", 
-                    pattern: "coreapi/{controller}", 
-                    defaults: new { controller = "WeatherForecast", action = "Get" }, 
-                    constraints: null, dataTokens: null);
-            });
+            app.UseEndpoints(x => x.MapControllers());
+            //app.UseEndpoints(endpoints =>
+            //{
+            //    endpoints.MapControllerRoute(
+            //        name: "Default", 
+            //        pattern: "coreapi/{controller}", 
+            //        defaults: new { controller = "WeatherForecast", action = "Get" }, 
+            //        constraints: null, dataTokens: null);
+            //});
         }
     }
 }
