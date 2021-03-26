@@ -15,7 +15,7 @@ namespace APIApplication
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
             //.UseKestrel()
-            .UseIISIntegration()
+            //.UseIISIntegration()
             .UseContentRoot(Directory.GetCurrentDirectory())
             .UseStartup<Startup>();
         //.ConfigureWebHostDefaults(webBuilder =>

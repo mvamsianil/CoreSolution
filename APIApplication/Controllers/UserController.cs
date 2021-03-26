@@ -10,8 +10,7 @@ using System.Threading.Tasks;
 
 namespace APIApplication.Controllers
 {
-    [Route("coreapi/[controller]")]
-    [ApiController]
+    [ApiController, Route("coreapi/[controller]")]
     public class UserController : ControllerBase
     {
         private IUserService _userService;
@@ -31,7 +30,7 @@ namespace APIApplication.Controllers
             return Ok(response);
         }
 
-        [Authorize]
+        //Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme),
         [HttpGet, Route("getallusers")]
         public IActionResult GetAll()
         {

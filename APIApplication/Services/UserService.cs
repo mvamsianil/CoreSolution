@@ -49,12 +49,10 @@ namespace APIApplication.Services
         {
             return _users;
         }
-
         public User GetById(int id)
         {
             return _users.FirstOrDefault(x => x.Id == id);
         }
-
         private string generateJwtToken(User user)
         {
             // generate token that is valid for 7 days
@@ -62,7 +60,7 @@ namespace APIApplication.Services
             var key = Encoding.ASCII.GetBytes(_appSettings.Secret);
             var tokenDescriptor = new SecurityTokenDescriptor
             {
-                Subject = new ClaimsIdentity(new[] { new Claim("id", user.Id.ToString()) }),
+                Subject = new ClaimsIdentity(new[] { new Claim("id", user.Id.ToString()), new Claim("username", user.FirstName + "," + user.LastName) }),
                 Expires = DateTime.UtcNow.AddDays(7),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             };

@@ -24,7 +24,7 @@ namespace APIApplication.Middleware
             _logger = loggerfactory.CreateLogger<JwtMiddleware>();
         }
 
-        public async Task Invoke(HttpContext context, IUserService userService) 
+        public async Task InvokeAsync(HttpContext context, IUserService userService) 
         {
             var token = context.Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").Last();
 
@@ -48,6 +48,13 @@ namespace APIApplication.Middleware
                     // set clockskew to zero so tokens expire exactly at token expiration time (instead of 5 minutes later)
                     ClockSkew = TimeSpan.Zero
                 }, out SecurityToken validatedToken);
+
+                var jwtToken = (JwtSecurityToken)validatedToken;
+                var accountId = int.Parse(jwtToken.Claims.First(x => x.Type == "id").Value);
+                var username = string.Format(jwtToken.Claims.First(x => x.Type == "username").Value);
+                context.Request.Headers.Add("UserId", accountId.ToString());
+                context.Request.Headers.Add("ValidUser", "True");
+                context.Request.Headers.Add("Username", username);
             }
             catch (System.Exception ex)
             {
