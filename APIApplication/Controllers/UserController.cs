@@ -19,8 +19,8 @@ namespace APIApplication.Controllers
             _userService = userService;
         }
 
-        [HttpPost("authenticate"), Route("authenticate")]
-        public IActionResult Authenticate(AuthenticateRequest model)
+        [HttpPost, Route("authenticate")]
+        public IActionResult GetToken(AuthenticateRequest model)
         {
             var response = _userService.Authenticate(model);
 
