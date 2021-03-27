@@ -16,19 +16,34 @@ using System.Text;
 using System;
 using Microsoft.OpenApi.Models;
 using System.Reflection;
+using Microsoft.AspNetCore.Authorization;
 
 namespace APIApplication
 {
+    /// <summary>
+    /// Startup Class
+    /// </summary>
     public class Startup
     {
+
+        /// <summary>
+        /// Startup Constructor with configuration as parameter
+        /// </summary>
+        /// <param name="configuration"></param>
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
         }
 
+        /// <summary>
+        /// Configuration method
+        /// </summary>
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
+        /// <summary>
+        /// This method gets called by the runtime. Use this method to add services to the container.
+        /// </summary>
+        /// <param name="services"></param>
         public void ConfigureServices(IServiceCollection services)
         {
             var tokenValidationParameters = new TokenValidationParameters
@@ -47,19 +62,26 @@ namespace APIApplication
             services.AddControllers();
             services.Configure<AppSettings>(Configuration.GetSection("AppSettings"));
             services.AddScoped<IUserService, UserService>();
-            services.AddAuthentication(o =>
-                {
-                    o.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                    o.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-                })
+            services.AddAuthentication(options =>
+                  {
+                      options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                      options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                    var defaultAuthorizationPolicyBuilder = new AuthorizationPolicyBuilder(
+                  JwtBearerDefaults.AuthenticationScheme);
+
+                      defaultAuthorizationPolicyBuilder =
+                          defaultAuthorizationPolicyBuilder.RequireAuthenticatedUser();
+
+                      //options.DefaultPolicy = defaultAuthorizationPolicyBuilder.Build();
+                  })
                 .AddJwtBearer(o =>
                 {
-                    o.Audience = "https://localhost:44397";
-                    o.Authority = "https://localhost:44397";
+                    o.Audience = "Audience";
+                    //o.Authority = "https://localhost:44397";
                     o.RequireHttpsMetadata = false;
                     o.SaveToken = true;
                     o.TokenValidationParameters = tokenValidationParameters;
-                    o.Configuration = new OpenIdConnectConfiguration();
+                    //o.Configuration = new OpenIdConnectConfiguration();
                 });
             IdentityModelEventSource.ShowPII = true;
 
@@ -85,14 +107,29 @@ namespace APIApplication
                     }
                 });
 
-                //// Set the comments path for the Swagger JSON and UI.
-                //var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
-                //var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
-                //c.IncludeXmlComments(xmlPath);
+                // Set the comments path for the Swagger JSON and UI.
+                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                xmlFile = "SwaggerDemo.xml";
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                xmlPath = xmlFile;
+                c.IncludeXmlComments(xmlPath);
+
+                c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                {
+                    Description = "JWT Authorization header using the Bearer scheme. Example: \"Authorization: Bearer {token}\"",
+                    Name = "Authorization",
+                    In = ParameterLocation.Header,
+                    Type = SecuritySchemeType.ApiKey,
+                    Scheme = "Bearer"
+                });
             });
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        /// <summary>
+        /// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        /// </summary>
+        /// <param name="app"></param>
+        /// <param name="env"></param>
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
@@ -106,16 +143,15 @@ namespace APIApplication
                 .AllowAnyOrigin()
                 .AllowAnyMethod()
                 .AllowAnyHeader());
-            app.UseAuthentication();
-            app.UseAuthorization();
-            
             app.UseMiddleware<JwtMiddleware>();
             app.UseLogUrl();
+            app.UseAuthentication();
+            app.UseAuthorization();
 
             // Enable middleware to serve generated Swagger as a JSON endpoint.
             app.UseSwagger(c =>
             {
-                //c.SerializeAsV2 = true;
+                c.SerializeAsV2 = true;
             });
 
             // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.),
@@ -135,6 +171,10 @@ namespace APIApplication
             });
         }
 
+        /// <summary>
+        /// GetSignInKey
+        /// </summary>
+        /// <returns></returns>
         static private SymmetricSecurityKey GetSignInKey()
         {
             const string secretKey = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -143,14 +183,22 @@ namespace APIApplication
             return signingKey;
         }
 
+        /// <summary>
+        /// GetIssuer
+        /// </summary>
+        /// <returns></returns>
         static private string GetIssuer()
         {
-            return "https://localhost:44397";
+            return "Issuer";
         }
 
+        /// <summary>
+        /// GetAudience
+        /// </summary>
+        /// <returns></returns>
         static private string GetAudience()
         {
-            return "https://localhost:44397";
+            return "Audience";
         }
     }
 }

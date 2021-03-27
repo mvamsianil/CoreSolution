@@ -8,11 +8,17 @@ using System.Threading.Tasks;
 
 namespace APIApplication.Controllers
 {
+    /// <summary>
+    /// 
+    /// </summary>
     [Route("coreapi/[controller]")]
     [ApiController]
     public class BookController : ControllerBase
     {
         private List<Book> objBooks;
+        /// <summary>
+        /// 
+        /// </summary>
         public BookController()
         {
             if (objBooks == null || objBooks.Count == 0)
@@ -75,6 +81,10 @@ namespace APIApplication.Controllers
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         [Route("ListOfBooks"), HttpGet]
         public IEnumerable<Book> Get()
         {

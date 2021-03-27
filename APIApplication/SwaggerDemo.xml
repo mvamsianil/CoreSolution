@@ -1,0 +1,299 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>APIApplication</name>
+    </assembly>
+    <members>
+        <member name="T:APIApplication.Controllers.BookController">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:APIApplication.Controllers.BookController.#ctor">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:APIApplication.Controllers.BookController.Get">
+            <summary>
+            
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:APIApplication.Controllers.UserController">
+            <summary>
+            UserController
+            </summary>
+        </member>
+        <member name="M:APIApplication.Controllers.UserController.#ctor(APIApplication.Services.IUserService)">
+            <summary>
+            UserController
+            </summary>
+            <param name="userService"></param>
+        </member>
+        <member name="M:APIApplication.Controllers.UserController.GetToken(APIEntity.AuthenticateRequest)">
+            <summary>
+            GetToken
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="M:APIApplication.Controllers.UserController.GetAll">
+            <summary>
+            GetAll
+            </summary>
+            <returns></returns>       
+        </member>
+        <member name="T:APIApplication.Controllers.WeatherForecastController">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:APIApplication.Controllers.WeatherForecastController.#ctor(Microsoft.Extensions.Logging.ILogger{APIApplication.Controllers.WeatherForecastController})">
+            <summary>
+            
+            </summary>
+            <param name="logger"></param>
+        </member>
+        <member name="M:APIApplication.Controllers.WeatherForecastController.Get">
+            <summary>
+            
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:APIApplication.Helpers.AppSettings">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:APIApplication.Helpers.AppSettings.Secret">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="T:APIApplication.Helpers.AuthorizeAttribute">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:APIApplication.Helpers.AuthorizeAttribute.OnAuthorization(Microsoft.AspNetCore.Mvc.Filters.AuthorizationFilterContext)">
+            <summary>
+            
+            </summary>
+            <param name="context"></param>
+        </member>
+        <member name="T:APIApplication.Middleware.JwtMiddleware">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:APIApplication.Middleware.JwtMiddleware.#ctor(Microsoft.AspNetCore.Http.RequestDelegate,Microsoft.Extensions.Logging.ILoggerFactory,Microsoft.Extensions.Options.IOptions{APIApplication.Helpers.AppSettings})">
+            <summary>
+            
+            </summary>
+            <param name="next"></param>
+            <param name="loggerfactory"></param>
+            <param name="appSettings"></param>
+        </member>
+        <member name="M:APIApplication.Middleware.JwtMiddleware.InvokeAsync(Microsoft.AspNetCore.Http.HttpContext,APIApplication.Services.IUserService)">
+            <summary>
+            
+            </summary>
+            <param name="context"></param>
+            <param name="userService"></param>
+            <returns></returns>
+        </member>
+        <member name="M:APIApplication.Middleware.JwtMiddleware.AttachUserToContext(Microsoft.AspNetCore.Http.HttpContext,APIApplication.Services.IUserService,System.String)">
+            <summary>
+            
+            </summary>
+            <param name="context"></param>
+            <param name="userService"></param>
+            <param name="token"></param>
+        </member>
+        <member name="T:APIApplication.Middleware.LogURLMiddleware">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:APIApplication.Middleware.LogURLMiddleware.#ctor(Microsoft.AspNetCore.Http.RequestDelegate,Microsoft.Extensions.Logging.ILoggerFactory)">
+            <summary>
+            
+            </summary>
+            <param name="next"></param>
+            <param name="loggerFactory"></param>
+        </member>
+        <member name="M:APIApplication.Middleware.LogURLMiddleware.InvokeAsync(Microsoft.AspNetCore.Http.HttpContext)">
+            <summary>
+            
+            </summary>
+            <param name="context"></param>
+            <returns></returns>
+        </member>
+        <member name="T:APIApplication.Middleware.LogURLMiddlewareExtensions">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:APIApplication.Middleware.LogURLMiddlewareExtensions.UseLogUrl(Microsoft.AspNetCore.Builder.IApplicationBuilder)">
+            <summary>
+            
+            </summary>
+            <param name="app"></param>
+            <returns></returns>
+        </member>
+        <member name="T:APIApplication.Program">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:APIApplication.Program.Main(System.String[])">
+            <summary>
+            
+            </summary>
+            <param name="args"></param>
+        </member>
+        <member name="M:APIApplication.Program.CreateWebHostBuilder(System.String[])">
+            <summary>
+            
+            </summary>
+            <param name="args"></param>
+            <returns></returns>
+        </member>
+        <member name="T:APIApplication.Services.IUserService">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:APIApplication.Services.IUserService.Authenticate(APIEntity.AuthenticateRequest)">
+            <summary>
+            
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="M:APIApplication.Services.IUserService.GetAll">
+            <summary>
+            
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:APIApplication.Services.IUserService.GetById(System.Int32)">
+            <summary>
+            
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="T:APIApplication.Services.UserService">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:APIApplication.Services.UserService.#ctor(Microsoft.Extensions.Options.IOptions{APIApplication.Helpers.AppSettings})">
+            <summary>
+            
+            </summary>
+            <param name="appSettings"></param>
+        </member>
+        <member name="M:APIApplication.Services.UserService.Authenticate(APIEntity.AuthenticateRequest)">
+            <summary>
+            
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="M:APIApplication.Services.UserService.GetAll">
+            <summary>
+            
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:APIApplication.Services.UserService.GetById(System.Int32)">
+            <summary>
+            
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:APIApplication.Services.UserService.generateJwtToken(APIEntity.User)">
+            <summary>
+            
+            </summary>
+            <param name="user"></param>
+            <returns></returns>
+        </member>
+        <member name="T:APIApplication.Startup">
+            <summary>
+            Startup Class
+            </summary>
+        </member>
+        <member name="M:APIApplication.Startup.#ctor(Microsoft.Extensions.Configuration.IConfiguration)">
+            <summary>
+            Startup Constructor with configuration as parameter
+            </summary>
+            <param name="configuration"></param>
+        </member>
+        <member name="P:APIApplication.Startup.Configuration">
+            <summary>
+            Configuration method
+            </summary>
+        </member>
+        <member name="M:APIApplication.Startup.ConfigureServices(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+            <summary>
+            This method gets called by the runtime. Use this method to add services to the container.
+            </summary>
+            <param name="services"></param>
+        </member>
+        <member name="M:APIApplication.Startup.Configure(Microsoft.AspNetCore.Builder.IApplicationBuilder,Microsoft.AspNetCore.Hosting.IWebHostEnvironment)">
+            <summary>
+            This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+            </summary>
+            <param name="app"></param>
+            <param name="env"></param>
+        </member>
+        <member name="M:APIApplication.Startup.GetSignInKey">
+            <summary>
+            GetSignInKey
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:APIApplication.Startup.GetIssuer">
+            <summary>
+            GetIssuer
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:APIApplication.Startup.GetAudience">
+            <summary>
+            GetAudience
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:APIApplication.WeatherForecast">
+            <summary>
+            WeatherForecast
+            </summary>
+        </member>
+        <member name="P:APIApplication.WeatherForecast.Date">
+            <summary>
+            Date
+            </summary>
+        </member>
+        <member name="P:APIApplication.WeatherForecast.TemperatureC">
+            <summary>
+            TemperatureC
+            </summary>
+        </member>
+        <member name="P:APIApplication.WeatherForecast.TemperatureF">
+            <summary>
+            TemperatureF
+            </summary>
+        </member>
+        <member name="P:APIApplication.WeatherForecast.Summary">
+            <summary>
+            Summary
+            </summary>
+        </member>
+    </members>
+</doc>

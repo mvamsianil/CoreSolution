@@ -12,11 +12,21 @@ using System;
 
 namespace APIApplication.Middleware
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class JwtMiddleware
     {
         private readonly RequestDelegate _next;
         private readonly ILogger<JwtMiddleware> _logger;
         private readonly AppSettings _appSettings;
+        
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="next"></param>
+        /// <param name="loggerfactory"></param>
+        /// <param name="appSettings"></param>
         public JwtMiddleware(RequestDelegate next, ILoggerFactory loggerfactory, IOptions<AppSettings> appSettings)
         {
             _next = next;
@@ -24,6 +34,12 @@ namespace APIApplication.Middleware
             _logger = loggerfactory.CreateLogger<JwtMiddleware>();
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="userService"></param>
+        /// <returns></returns>
         public async Task InvokeAsync(HttpContext context, IUserService userService) 
         {
             var token = context.Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").Last();
@@ -34,6 +50,12 @@ namespace APIApplication.Middleware
             await _next(context);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="userService"></param>
+        /// <param name="token"></param>
         private void AttachUserToContext(HttpContext context, IUserService userService, string token)
         {
             try
