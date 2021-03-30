@@ -39,7 +39,7 @@ namespace APIApplication.Controllers
             var response = _userService.Authenticate(model);
 
             if (response == null)
-                return BadRequest(new { message = "Username or password is incorrect" });
+                return Unauthorized(new { message = "Username or password is incorrect" });
 
             return Ok(response);
         }
@@ -53,6 +53,21 @@ namespace APIApplication.Controllers
         {
             var users = _userService.GetAll();
             return Ok(users);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="token"></param>
+        /// <returns></returns>
+        [HttpGet, Route("validatetoken"), AllowAnonymous]
+        public IActionResult ValidateToken(string token) {
+            bool response = _userService.ValidateToken(token);
+
+            if (!response)
+                return Unauthorized(new { message = "Token Invalid" });
+
+            return Ok(response);
         }
     }
 }

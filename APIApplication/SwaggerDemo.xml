@@ -44,6 +44,13 @@
             </summary>
             <returns></returns>       
         </member>
+        <member name="M:APIApplication.Controllers.UserController.ValidateToken(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="token"></param>
+            <returns></returns>
+        </member>
         <member name="T:APIApplication.Controllers.WeatherForecastController">
             <summary>
             
@@ -185,6 +192,13 @@
             <param name="id"></param>
             <returns></returns>
         </member>
+        <member name="M:APIApplication.Services.IUserService.ValidateToken(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="token"></param>
+            <returns></returns>
+        </member>
         <member name="T:APIApplication.Services.UserService">
             <summary>
             
@@ -215,6 +229,13 @@
             </summary>
             <param name="id"></param>
             <returns></returns>
+        </member>
+        <member name="M:APIApplication.Services.UserService.ValidateToken(System.String)">
+            <summary>
+            ValidateToken
+            </summary>
+            <param name="token"></param>
+            <returns>Returns boolean value. True if token is valid. False if token is invalid</returns>
         </member>
         <member name="M:APIApplication.Services.UserService.generateJwtToken(APIEntity.User)">
             <summary>

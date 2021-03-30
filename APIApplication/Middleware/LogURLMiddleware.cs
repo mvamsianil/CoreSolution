@@ -24,7 +24,7 @@ namespace APIApplication.Middleware
         public LogURLMiddleware(RequestDelegate next, ILoggerFactory loggerFactory)
         {
             _next = next;
-            _logger = loggerFactory?.CreateLogger<LogURLMiddleware>() ?? throw new ArgumentNullException(nameof(loggerFactory));
+            _logger = loggerFactory.CreateLogger<LogURLMiddleware>();
         }
 
         /// <summary>
